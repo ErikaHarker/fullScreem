@@ -6,6 +6,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 import os
+import time
 
 
 @api_view(['GET', 'POST'])
@@ -23,12 +24,14 @@ def FullScreemView(request):
 
 
 def comand_scala(status_button):
-
     try:
         if status_button:
             os.system('python -m scalalink -v -t tcp -p 7700 -H localhost set interVar=True')
+            time.sleep(2)
+            os.system('python -m scalalink -v -t tcp -p 7700 -H localhost set interVar=False')
         else:
-            os.system('python -m scalalink -v -t tcp -p 7700 -H localhost set interVar=True')
+            os.system('python -m scalalink -v -t tcp -p 7700 -H localhost set interVar=False')
+
         return Response({"detail": "ok"},
                         status=status.HTTP_200_OK)
     except:
